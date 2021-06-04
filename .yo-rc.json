@@ -36,6 +36,8 @@
     "nativeLanguage": "ko",
     "packageFolder": "com/my/book",
     "jwtSecretKey": "NDk2NzRjMDRhZWIwOTU0NThhZTZmN2YzZTA4ZjcxZTA3ODk3YzNmMDA5MzQzODJmOTgwYzczNzkxZjNlMmU3ZWMzMDE3ODdkZGM0MjAzMjUyNjVhYzRmOGQ2ZjhjZTI4NTEwZGQyM2Q5OTk2YzA0OTllN2RiNTRjYWY0MjdjNmY=",
-    "languages": ["ko", "en"]
+    "languages": ["ko", "en"],
+    "lastLiquibaseTimestamp": 1622558385000,
+    "entities": ["Book"]
   }
 }
