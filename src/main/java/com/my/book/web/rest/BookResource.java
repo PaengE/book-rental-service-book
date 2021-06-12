@@ -1,10 +1,12 @@
 package com.my.book.web.rest;
 
+import com.my.book.domain.Book;
 import com.my.book.repository.BookRepository;
 import com.my.book.service.BookQueryService;
 import com.my.book.service.BookService;
 import com.my.book.service.criteria.BookCriteria;
 import com.my.book.web.rest.dto.BookDTO;
+import com.my.book.web.rest.dto.BookInfoDTO;
 import com.my.book.web.rest.errors.BadRequestAlertException;
 import com.my.book.web.rest.mapper.BookMapper;
 import java.net.URI;
@@ -200,5 +202,18 @@ public class BookResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * 도서 정보 조회 API
+     * @param bookId
+     * @return
+     */
+    @GetMapping("/books/bookInfo/{bookId}")
+    public ResponseEntity<BookInfoDTO> findBookInfo(@PathVariable("bookId") Long bookId) {
+        Book book = bookService.findBookInfo(bookId);
+        BookInfoDTO bookInfoDTO = new BookInfoDTO(bookId, book.getTitle());
+        log.debug(bookInfoDTO.toString());
+        return ResponseEntity.ok().body(bookInfoDTO);
     }
 }
