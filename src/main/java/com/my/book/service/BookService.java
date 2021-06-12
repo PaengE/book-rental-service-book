@@ -1,8 +1,10 @@
 package com.my.book.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.my.book.domain.Book;
 import com.my.book.web.rest.dto.BookDTO;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -48,6 +50,12 @@ public interface BookService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Book createBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException;
+
+    Book updateBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException;
+
+    void processChangeBookState(Long bookId, String bookStatus);
 
     Book findBookInfo(Long bookId);
 }

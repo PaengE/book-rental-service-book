@@ -1,11 +1,13 @@
 package com.my.book.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.my.book.domain.Book;
 import com.my.book.repository.BookRepository;
 import com.my.book.service.BookService;
 import com.my.book.web.rest.dto.BookDTO;
 import com.my.book.web.rest.mapper.BookMapper;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -72,6 +74,19 @@ public class BookServiceImpl implements BookService {
         log.debug("Request to delete Book : {}", id);
         bookRepository.deleteById(id);
     }
+
+    @Override
+    public Book createBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException {
+        return null;
+    }
+
+    @Override
+    public Book updateBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException {
+        return null;
+    }
+
+    @Override
+    public void processChangeBookState(Long bookId, String bookStatus) {}
 
     @Override
     @Transactional
