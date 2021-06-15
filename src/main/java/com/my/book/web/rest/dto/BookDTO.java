@@ -12,7 +12,8 @@ import lombok.Setter;
  * A DTO for the {@link com.my.book.domain.Book} entity.
  */
 
-@Data
+@Getter
+@Setter
 public class BookDTO implements Serializable {
 
     private Long id;

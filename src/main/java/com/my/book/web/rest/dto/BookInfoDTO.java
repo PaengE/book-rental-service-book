@@ -1,9 +1,7 @@
 package com.my.book.web.rest.dto;
 
 import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
