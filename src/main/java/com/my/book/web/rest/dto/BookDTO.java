@@ -1,12 +1,13 @@
 package com.my.book.web.rest.dto;
 
+import com.my.book.domain.enumeration.BookStatus;
+import com.my.book.domain.enumeration.Classification;
+import com.my.book.domain.enumeration.Location;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import javax.validation.constraints.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * A DTO for the {@link com.my.book.domain.Book} entity.
@@ -14,6 +15,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@ToString
 public class BookDTO implements Serializable {
 
     private Long id;
@@ -25,4 +27,16 @@ public class BookDTO implements Serializable {
     private String author;
 
     private String description;
+
+    private String publisher;
+
+    private Long isbn;
+
+    private LocalDate publicationDate;
+
+    private Classification classification;
+
+    private BookStatus bookStatus;
+
+    private Location location;
 }

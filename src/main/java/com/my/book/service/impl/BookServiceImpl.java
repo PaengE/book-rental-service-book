@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.my.book.domain.Book;
 import com.my.book.repository.BookRepository;
 import com.my.book.service.BookService;
+import com.my.book.service.InStockBookService;
 import com.my.book.web.rest.dto.BookDTO;
 import com.my.book.web.rest.mapper.BookMapper;
 import java.util.Optional;
@@ -82,6 +83,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book updateBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException {
+        Book updatedBook = bookRepository.save(book);
         return null;
     }
 
@@ -93,4 +95,14 @@ public class BookServiceImpl implements BookService {
     public Book findBookInfo(Long bookId) {
         return bookRepository.findById(bookId).get();
     }
+
+    @Override
+    public Book registerNewBook(Book book, Long inStockId) throws InterruptedException, ExecutionException, JsonProcessingException {
+        Book newBook = bookRepository.save(book);
+        return null;
+    }
+
+    @Override
+    public void sendBookCatalogEvent(String eventType, Long bookId)
+        throws InterruptedException, ExecutionException, JsonProcessingException {}
 }

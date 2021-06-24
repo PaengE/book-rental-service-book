@@ -44,18 +44,21 @@ public interface BookService {
      */
     Optional<BookDTO> findOne(Long id);
 
-    /**
-     * Delete the "id" book.
-     *
-     * @param id the id of the entity.
-     */
+    // 재고 도서 삭제
     void delete(Long id);
 
+    // 재고 도서 생성
     Book createBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException;
 
+    // 재고 도서 수정
     Book updateBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException;
 
     void processChangeBookState(Long bookId, String bookStatus);
 
     Book findBookInfo(Long bookId);
+
+    // 재고 도서 등록
+    Book registerNewBook(Book book, Long inStockId) throws InterruptedException, ExecutionException, JsonProcessingException;
+
+    void sendBookCatalogEvent(String eventType, Long bookId) throws InterruptedException, ExecutionException, JsonProcessingException;
 }

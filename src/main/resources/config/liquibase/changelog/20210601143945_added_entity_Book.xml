@@ -23,6 +23,27 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="publisher" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="isbn" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="publication_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="classification" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="book_status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="location" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="book_reservation" type="varchar(4000)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -46,6 +67,13 @@
             <column name="title" type="string"/>
             <column name="author" type="string"/>
             <column name="description" type="string"/>
+            <column name="publisher" type="string"/>
+            <column name="isbn" type="numeric"/>
+            <column name="publication_date" type="date"/>
+            <column name="classification" type="string"/>
+            <column name="book_status" type="string"/>
+            <column name="location" type="string"/>
+            <column name="book_reservation" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
