@@ -48,6 +48,7 @@
   "relationships": [],
   "service": "serviceImpl",
   "dto": "mapstruct",
+  "entityTableName": "book",
   "jpaMetamodelFiltering": true,
   "readOnly": false,
   "pagination": "pagination",
