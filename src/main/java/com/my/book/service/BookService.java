@@ -46,6 +46,7 @@ public interface BookService {
 
     void processChangeBookState(Long bookId, String bookStatus);
 
+    // 재고 도서 정보 조회
     Book findBookInfo(Long bookId);
 
     // 재고 도서 등록
