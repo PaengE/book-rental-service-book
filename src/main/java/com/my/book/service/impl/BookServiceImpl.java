@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.my.book.domain.Book;
 import com.my.book.repository.BookRepository;
 import com.my.book.service.BookService;
-import com.my.book.service.InStockBookService;
 import com.my.book.web.rest.dto.BookDTO;
 import com.my.book.web.rest.mapper.BookMapper;
 import java.util.Optional;
@@ -41,33 +40,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<BookDTO> partialUpdate(BookDTO bookDTO) {
-        log.debug("Request to partially update Book : {}", bookDTO);
-
-        return bookRepository
-            .findById(bookDTO.getId())
-            .map(
-                existingBook -> {
-                    bookMapper.partialUpdate(existingBook, bookDTO);
-                    return existingBook;
-                }
-            )
-            .map(bookRepository::save)
-            .map(bookMapper::toDto);
-    }
-
-    @Override
     @Transactional(readOnly = true)
-    public Page<BookDTO> findAll(Pageable pageable) {
+    public Page<Book> findAll(Pageable pageable) {
         log.debug("Request to get all Books");
-        return bookRepository.findAll(pageable).map(bookMapper::toDto);
+        return bookRepository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<BookDTO> findOne(Long id) {
+    public Optional<Book> findOne(Long id) {
         log.debug("Request to get Book : {}", id);
-        return bookRepository.findById(id).map(bookMapper::toDto);
+        return bookRepository.findById(id);
     }
 
     @Override

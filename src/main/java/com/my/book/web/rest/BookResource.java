@@ -44,11 +44,8 @@ public class BookResource {
     private String applicationName;
 
     private final BookService bookService;
-
     private final BookRepository bookRepository;
-
     private final BookQueryService bookQueryService;
-
     private final BookMapper bookMapper;
 
     public BookResource(BookService bookService, BookRepository bookRepository, BookQueryService bookQueryService, BookMapper bookMapper) {
@@ -66,7 +63,7 @@ public class BookResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/books")
-    public ResponseEntity<BookDTO> createBook(@Valid @RequestBody BookDTO bookDTO) throws URISyntaxException {
+    public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) throws URISyntaxException {
         log.debug("REST request to save Book : {}", bookDTO);
         if (bookDTO.getId() != null) {
             throw new BadRequestAlertException("A new book cannot already have an ID", ENTITY_NAME, "idexists");
@@ -89,10 +86,8 @@ public class BookResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/books/{id}")
-    public ResponseEntity<BookDTO> updateBook(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody BookDTO bookDTO
-    ) throws URISyntaxException {
+    public ResponseEntity<BookDTO> updateBook(@PathVariable(value = "id", required = false) final Long id, @RequestBody BookDTO bookDTO)
+        throws URISyntaxException {
         log.debug("REST request to update Book : {}, {}", id, bookDTO);
         if (bookDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -110,42 +105,6 @@ public class BookResource {
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bookDTO.getId().toString()))
             .body(result);
-    }
-
-    /**
-     * {@code PATCH  /books/:id} : Partial updates given fields of an existing book, field will ignore if it is null
-     *
-     * @param id the id of the bookDTO to save.
-     * @param bookDTO the bookDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated bookDTO,
-     * or with status {@code 400 (Bad Request)} if the bookDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the bookDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the bookDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/books/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<BookDTO> partialUpdateBook(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody BookDTO bookDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Book partially : {}, {}", id, bookDTO);
-        if (bookDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, bookDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!bookRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<BookDTO> result = bookService.partialUpdate(bookDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bookDTO.getId().toString())
-        );
     }
 
     /**
@@ -184,7 +143,7 @@ public class BookResource {
     @GetMapping("/books/{id}")
     public ResponseEntity<BookDTO> getBook(@PathVariable Long id) {
         log.debug("REST request to get Book : {}", id);
-        Optional<BookDTO> bookDTO = bookService.findOne(id);
+        Optional<BookDTO> bookDTO = Optional.ofNullable(bookMapper.toDto(bookService.findOne(id).get()));
         return ResponseUtil.wrapOrNotFound(bookDTO);
     }
 

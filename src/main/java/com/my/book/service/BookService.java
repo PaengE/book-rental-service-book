@@ -2,7 +2,6 @@ package com.my.book.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.my.book.domain.Book;
-import com.my.book.web.rest.dto.BookDTO;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import org.springframework.data.domain.Page;
@@ -21,20 +20,12 @@ public interface BookService {
     Book save(Book book);
 
     /**
-     * Partially updates a book.
-     *
-     * @param bookDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<BookDTO> partialUpdate(BookDTO bookDTO);
-
-    /**
      * Get all the books.
      *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<BookDTO> findAll(Pageable pageable);
+    Page<Book> findAll(Pageable pageable);
 
     /**
      * Get the "id" book.
@@ -42,7 +33,7 @@ public interface BookService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<BookDTO> findOne(Long id);
+    Optional<Book> findOne(Long id);
 
     // 재고 도서 삭제
     void delete(Long id);

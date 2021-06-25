@@ -2,14 +2,12 @@ package com.my.book.service.criteria;
 
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import tech.jhipster.service.Criteria;
-import tech.jhipster.service.filter.BooleanFilter;
-import tech.jhipster.service.filter.DoubleFilter;
-import tech.jhipster.service.filter.Filter;
-import tech.jhipster.service.filter.FloatFilter;
-import tech.jhipster.service.filter.IntegerFilter;
-import tech.jhipster.service.filter.LongFilter;
-import tech.jhipster.service.filter.StringFilter;
+import tech.jhipster.service.filter.*;
 
 /**
  * Criteria class for the {@link com.my.book.domain.Book} entity. This class is used
@@ -20,34 +18,35 @@ import tech.jhipster.service.filter.StringFilter;
  * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class BookCriteria implements Serializable, Criteria {
 
     private static final long serialVersionUID = 1L;
 
     private LongFilter id;
-
     private StringFilter title;
-
     private StringFilter author;
-
     private StringFilter description;
-
-    public BookCriteria() {}
+    private StringFilter publisher;
+    private LongFilter isbn;
+    private LocalDateFilter publicationDate;
 
     public BookCriteria(BookCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.title = other.title == null ? null : other.title.copy();
         this.author = other.author == null ? null : other.author.copy();
         this.description = other.description == null ? null : other.description.copy();
+        this.publisher = other.publisher == null ? null : other.publisher.copy();
+        this.isbn = other.isbn == null ? null : other.isbn.copy();
+        this.publicationDate = other.publicationDate == null ? null : other.publicationDate.copy();
     }
 
     @Override
     public BookCriteria copy() {
         return new BookCriteria(this);
-    }
-
-    public LongFilter getId() {
-        return id;
     }
 
     public LongFilter id() {
@@ -57,27 +56,11 @@ public class BookCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public void setId(LongFilter id) {
-        this.id = id;
-    }
-
-    public StringFilter getTitle() {
-        return title;
-    }
-
     public StringFilter title() {
         if (title == null) {
             title = new StringFilter();
         }
         return title;
-    }
-
-    public void setTitle(StringFilter title) {
-        this.title = title;
-    }
-
-    public StringFilter getAuthor() {
-        return author;
     }
 
     public StringFilter author() {
@@ -87,14 +70,6 @@ public class BookCriteria implements Serializable, Criteria {
         return author;
     }
 
-    public void setAuthor(StringFilter author) {
-        this.author = author;
-    }
-
-    public StringFilter getDescription() {
-        return description;
-    }
-
     public StringFilter description() {
         if (description == null) {
             description = new StringFilter();
@@ -102,8 +77,25 @@ public class BookCriteria implements Serializable, Criteria {
         return description;
     }
 
-    public void setDescription(StringFilter description) {
-        this.description = description;
+    public StringFilter publisher() {
+        if (publisher == null) {
+            publisher = new StringFilter();
+        }
+        return publisher;
+    }
+
+    public LongFilter isbn() {
+        if (isbn == null) {
+            isbn = new LongFilter();
+        }
+        return isbn;
+    }
+
+    public LocalDateFilter publicationDate() {
+        if (publicationDate == null) {
+            publicationDate = new LocalDateFilter();
+        }
+        return publicationDate;
     }
 
     @Override
@@ -119,13 +111,16 @@ public class BookCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
             Objects.equals(author, that.author) &&
-            Objects.equals(description, that.description)
+            Objects.equals(description, that.description) &&
+            Objects.equals(publisher, that.publisher) &&
+            Objects.equals(isbn, that.isbn) &&
+            Objects.equals(publicationDate, that.publicationDate)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, description);
+        return Objects.hash(id, title, author, description, publisher, isbn, publicationDate);
     }
 
     // prettier-ignore
@@ -136,6 +131,9 @@ public class BookCriteria implements Serializable, Criteria {
             (title != null ? "title=" + title + ", " : "") +
             (author != null ? "author=" + author + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
+            (publisher != null ? "publisher=" + publisher + ", " : "") +
+            (isbn != null ? "isbn=" + isbn + ", " : "") +
+            (publicationDate != null ? "publicationDate=" + publicationDate + ", " : "") +
             "}";
     }
 }

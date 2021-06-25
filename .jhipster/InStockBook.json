@@ -1,0 +1,45 @@
+{
+  "name": "InStockBook",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "author",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "publisher",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isbn",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "publicationDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "source",
+      "fieldType": "Source",
+      "fieldValues": "Donated,Purchased"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20210624180010",
+  "entityTableName": "in_stock_book",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "readOnly": false,
+  "applications": "*",
+  "microserviceName": "book",
+  "clientRootFolder": "book"
+}

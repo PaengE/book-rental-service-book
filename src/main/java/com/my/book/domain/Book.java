@@ -27,11 +27,9 @@ public class Book implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
     @Column(name = "title", nullable = false)
     private String title;
 
-    @NotNull
     @Column(name = "author", nullable = false)
     private String author;
 

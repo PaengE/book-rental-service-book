@@ -19,24 +19,13 @@ import lombok.*;
 public class BookDTO implements Serializable {
 
     private Long id;
-
-    @NotNull
     private String title;
-
-    @NotNull
     private String author;
-
     private String description;
-
     private String publisher;
-
     private Long isbn;
-
     private LocalDate publicationDate;
-
     private Classification classification;
-
     private BookStatus bookStatus;
-
     private Location location;
 }

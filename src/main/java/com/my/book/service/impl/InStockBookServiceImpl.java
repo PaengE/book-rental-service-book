@@ -9,7 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional
 public class InStockBookServiceImpl implements InStockBookService {
 
     private final Logger log = LoggerFactory.getLogger(InStockBookServiceImpl.class);
@@ -24,13 +28,6 @@ public class InStockBookServiceImpl implements InStockBookService {
     public InStockBook save(InStockBook inStockBook) {
         log.debug("Request to save InStockBook : {}", inStockBook);
         return inStockBookRepository.save(inStockBook);
-    }
-
-    @Override
-    public Optional<InStockBookDTO> partialUpdate(InStockBookDTO inStockBookDTO) {
-        log.debug("Request to partially update Book : {}", inStockBookDTO);
-
-        return Optional.empty();
     }
 
     @Override
@@ -49,5 +46,10 @@ public class InStockBookServiceImpl implements InStockBookService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete InStockBook : {}", id);
+    }
+
+    @Override
+    public Page<InStockBookDTO> findByTitle(String title, Pageable pageable) {
+        return null;
     }
 }

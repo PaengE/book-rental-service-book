@@ -19,14 +19,6 @@ public interface InStockBookService {
     InStockBook save(InStockBook inStockBook);
 
     /**
-     * Partially updates a inStockBook.
-     *
-     * @param inStockBookDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<InStockBookDTO> partialUpdate(InStockBookDTO inStockBookDTO);
-
-    /**
      * Get all the inStockBooks.
      *
      * @param pageable the pagination information.
@@ -48,4 +40,6 @@ public interface InStockBookService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<InStockBookDTO> findByTitle(String title, Pageable pageable);
 }
