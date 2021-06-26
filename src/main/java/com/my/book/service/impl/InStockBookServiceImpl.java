@@ -4,6 +4,7 @@ import com.my.book.domain.InStockBook;
 import com.my.book.repository.InStockBookRepository;
 import com.my.book.service.InStockBookService;
 import com.my.book.web.rest.dto.InStockBookDTO;
+import com.my.book.web.rest.mapper.InStockBookMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,11 @@ public class InStockBookServiceImpl implements InStockBookService {
 
     private final InStockBookRepository inStockBookRepository;
 
-    public InStockBookServiceImpl(InStockBookRepository inStockBookRepository) {
+    private final InStockBookMapper inStockBookMapper;
+
+    public InStockBookServiceImpl(InStockBookRepository inStockBookRepository, InStockBookMapper inStockBookMapper) {
         this.inStockBookRepository = inStockBookRepository;
+        this.inStockBookMapper = inStockBookMapper;
     }
 
     @Override
@@ -39,17 +43,17 @@ public class InStockBookServiceImpl implements InStockBookService {
     @Override
     public Optional<InStockBook> findOne(Long id) {
         log.debug("Request to get InStockBook : {}", id);
-
-        return Optional.empty();
+        return Optional.of(inStockBookRepository.findById(id).get());
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete InStockBook : {}", id);
+        inStockBookRepository.deleteById(id);
     }
 
     @Override
     public Page<InStockBookDTO> findByTitle(String title, Pageable pageable) {
-        return null;
+        return inStockBookRepository.findByTitleContaining(title, pageable).map(inStockBookMapper::toDto);
     }
 }
