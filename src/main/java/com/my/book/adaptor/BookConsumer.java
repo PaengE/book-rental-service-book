@@ -42,6 +42,8 @@ public class BookConsumer {
         log.info("Kafka consumer starting...");
         this.kafkaConsumer = new KafkaConsumer<String, String>(kafkaProperties.getConsumerProps());
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+
+        // 토픽 구독
         kafkaConsumer.subscribe(Collections.singleton(TOPIC));
         log.info("Kafka consumer started");
 

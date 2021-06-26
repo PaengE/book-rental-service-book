@@ -1,5 +1,6 @@
 package com.my.book.web.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.my.book.domain.Book;
 import com.my.book.repository.BookRepository;
 import com.my.book.service.BookQueryService;
@@ -14,6 +15,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -78,7 +80,7 @@ public class BookResource {
     /**
      * {@code PUT  /books/:id} : Updates an existing book.
      *
-     * @param id the id of the bookDTO to save.
+     * @param id      the id of the bookDTO to save.
      * @param bookDTO the bookDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated bookDTO,
      * or with status {@code 400 (Bad Request)} if the bookDTO is not valid,
@@ -154,9 +156,13 @@ public class BookResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/books/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) throws ExecutionException, InterruptedException, JsonProcessingException {
         log.debug("REST request to delete Book : {}", id);
+
+        //  도서 서비스 구현체를 호출해서 도서 정보를 삭제
         bookService.delete(id);
+
+        //  HTTP 프로토콜 반환
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
@@ -165,6 +171,7 @@ public class BookResource {
 
     /**
      * 도서 정보 조회 API
+     *
      * @param bookId
      * @return
      */
@@ -174,5 +181,66 @@ public class BookResource {
         BookInfoDTO bookInfoDTO = new BookInfoDTO(bookId, book.getTitle());
         log.debug(bookInfoDTO.toString());
         return ResponseEntity.ok().body(bookInfoDTO);
+    }
+
+    /**
+     * 재고 도서 정보 등록
+     *
+     * @param bookDTO
+     * @param inStockId
+     * @return
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws JsonProcessingException
+     * @throws URISyntaxException
+     */
+    @PostMapping("/books/{inStockId}")
+    public ResponseEntity<BookDTO> registerBook(@RequestBody BookDTO bookDTO, @PathVariable Long inStockId)
+        throws ExecutionException, InterruptedException, JsonProcessingException, URISyntaxException {
+        if (bookDTO.getId() != null) {
+            throw new BadRequestAlertException("A new book cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+
+        // 도서 서비스 구현체를 호출하여 도서 정보를 등록
+        Book newBook = bookService.registerNewBook(bookMapper.toEntity(bookDTO), inStockId);
+
+        // DTO 변환
+        BookDTO result = bookMapper.toDto(newBook);
+
+        // HTTP 프로토콜에 DTO를 담아 반환
+        return ResponseEntity
+            .created(new URI("/api/books/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * 재고 도서 정보 수정
+     *
+     * @param bookDTO
+     * @return
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws JsonProcessingException
+     */
+    @PutMapping("/books")
+    public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDTO)
+        throws ExecutionException, InterruptedException, JsonProcessingException {
+        log.debug("REST request to update Book : {}", bookDTO);
+        if (bookDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+
+        // 도서 서비스 구현체를 호출하여 도서 정보를 수정
+        Book updateBook = bookService.updateBook(bookMapper.toEntity(bookDTO));
+
+        // DTO 변환
+        BookDTO result = bookMapper.toDto(updateBook);
+
+        // HTTP 프로토콜에 DTO를 담아 반환
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bookDTO.getId().toString()))
+            .body(result);
     }
 }

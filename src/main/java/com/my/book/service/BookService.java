@@ -36,7 +36,7 @@ public interface BookService {
     Optional<Book> findOne(Long id);
 
     // 재고 도서 삭제
-    void delete(Long id);
+    void delete(Long id) throws ExecutionException, InterruptedException, JsonProcessingException;
 
     // 재고 도서 생성
     Book createBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException;
@@ -44,6 +44,7 @@ public interface BookService {
     // 재고 도서 수정
     Book updateBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException;
 
+    // 컨슈머 어댑터가 호출한 비즈니스 로직 처리
     void processChangeBookState(Long bookId, String bookStatus);
 
     // 재고 도서 정보 조회
