@@ -35,12 +35,14 @@ public class InStockBookServiceImpl implements InStockBookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<InStockBook> findAll(Pageable pageable) {
         log.debug("Request to get all InStockBooks");
         return inStockBookRepository.findAll(pageable);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<InStockBook> findOne(Long id) {
         log.debug("Request to get InStockBook : {}", id);
         return Optional.of(inStockBookRepository.findById(id).get());
