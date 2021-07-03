@@ -76,6 +76,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book createBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException {
+        log.debug("Request to create Book : {}", book);
         Book createdBook = bookRepository.save(book);
         sendBookCatalogEvent("NEW_BOOK", createdBook.getId());
         return createdBook;
@@ -83,6 +84,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book updateBook(Book book) throws InterruptedException, ExecutionException, JsonProcessingException {
+        log.debug("Request to update Book : {}", book);
         Book updatedBook = bookRepository.save(book);
         sendBookCatalogEvent("UPDATE_BOOK", book.getId());
         return updatedBook;
@@ -98,6 +100,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book findBookInfo(Long bookId) {
+        log.debug("Request to findBookInfo Book : {}", bookId);
         return bookRepository.findById(bookId).get();
     }
 
