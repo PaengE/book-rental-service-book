@@ -1,7 +1,5 @@
 package com.my.book.adaptor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.my.book.config.KafkaProperties;
 import com.my.book.domain.event.StockChanged;
@@ -33,8 +31,9 @@ public class BookConsumer {
     private BookService bookService;
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public BookConsumer(KafkaProperties kafkaProperties) {
+    public BookConsumer(KafkaProperties kafkaProperties, BookService bookService) {
         this.kafkaProperties = kafkaProperties;
+        this.bookService = bookService;
     }
 
     @PostConstruct
