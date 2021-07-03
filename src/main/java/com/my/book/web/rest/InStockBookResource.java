@@ -71,9 +71,32 @@ public class InStockBookResource {
             throw new BadRequestAlertException("A new inStockBook cannot already have an ID", ENTITY_NAME, "idexists");
         }
         InStockBookDTO result = inStockBookMapper.toDto(inStockBookService.save(inStockBookMapper.toEntity(inStockBookDTO)));
+        log.debug("result : {}", result);
         return ResponseEntity
             .created(new URI("/api/in-stock-books/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code PUT  /in-stock-books} : Updates an existing inStockBook.
+     *
+     * @param inStockBookDTO the inStockBookDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated inStockBookDTO,
+     * or with status {@code 400 (Bad Request)} if the inStockBookDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the inStockBookDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/in-stock-books")
+    public ResponseEntity<InStockBookDTO> updateInStockBook(@RequestBody InStockBookDTO inStockBookDTO) throws URISyntaxException {
+        log.debug("REST request to update InStockBook : {}", inStockBookDTO);
+        if (inStockBookDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        InStockBookDTO result = inStockBookMapper.toDto(inStockBookService.save(inStockBookMapper.toEntity(inStockBookDTO)));
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, inStockBookDTO.getId().toString()))
             .body(result);
     }
 
@@ -166,7 +189,7 @@ public class InStockBookResource {
     @GetMapping("/in-stock-books/title/{title}")
     public ResponseEntity<List<InStockBookDTO>> getInStockBookByTitle(@PathVariable String title, Pageable pageable) {
         Page<InStockBookDTO> page = inStockBookService.findByTitle(title, pageable);
-        // List<InStockBookDTO> inStockBookDTOS = inStockBookMapper.toDto(page.getContent());
+        //List<InStockBookDTO> inStockBookDTOS = inStockBookMapper.toDto(page.getContent());
         //HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), new PageImpl<>(inStockBookDTOS));
         return ResponseEntity.ok().body(page.getContent());
     }
